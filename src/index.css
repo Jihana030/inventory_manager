@@ -3,14 +3,16 @@
     --white: #fff;
     --black: #222;
     --gray: #ddd;
+    --font-gray: #707070;
     --back-gray: #F3F3F3;
-    --back-black: #777676;
+    --back-black: #dddddd;
     --yellow: #ffe99e;
     --red: #e01818;
-    --font-title: 2.4rem;
-    --font-subtitle: 1.8rem;
+    --point: #a970ff;
+    --font-title: 2rem;
+    --font-subtitle: 1.6rem;
     --font-normal: 1.3rem;
-    --font-small: 1.1rem;
+    --font-small: 1rem;
     --thumbnail-title-back: linear-gradient(#ffffff00, var(--back-black));
     --radius-big: 1.6rem;
     --radius-small: 0.8rem;
@@ -41,17 +43,32 @@ input, input:focus, button, textarea, select {
     outline: none;
     border: none;
 }
-input[type="text"], textarea {
-    padding: 4px;
+input[type="text"], input[type="number"], textarea, select {
     border: var(--border-gray);
     color: var(--black);
     font-size: var(--font-normal);
 }
 textarea {
     resize: none;
+    min-width: 30rem;
+    max-width: 50rem;
 }
 input, textarea, button, select {
     border-radius: var(--radius-small);
+    padding: 0.8rem;
+    font-size: var(--font-normal);
+}
+select {
+    padding: 0.8rem 3rem 0.8rem 0.8rem;
+    appearance:none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    background:url('./assets/select_arrow.png') no-repeat right 0.2rem center #fff;
+    background-size: 1.9rem;
+}
+
+input[type="text"] {
+    width: 100%;
 }
 input[type="number"] {
     -moz-appearance: textfield;
@@ -82,6 +99,7 @@ html {
 }
 body {
     font-size: var(--font-normal);
+    font-weight: 500;
     font-family: Pretendard, serif;
 }
 
@@ -92,6 +110,7 @@ header  {
     background: #fff;
     height: 5.4rem;
     width: 100%;
+    font-weight: 600;
 }
 
 .container {
@@ -99,30 +118,32 @@ header  {
     padding: 3rem;
     height: calc(100dvh - 5.4rem);
     overflow: hidden;
-    display: grid;
-    grid-template-areas:
-    "list detail regist"
-    "list detail regist"
-    "list calendal ."
-    ;
-    grid-gap: 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 2rem;
+    position: relative;
     > div {
         border-radius: var(--radius-big);
         border: var(--border-gray);
         overflow: hidden;
-        max-height: calc(100dvh - 8.4rem);
         display: flex;
         flex-direction: column;
+        height: auto;
+        max-height: stretch;
         .component_title {
             padding: 2rem;
-            font-size: var(--font-normal);
+            font-size: var(--font-subtitle);
             border-bottom: var(--border-gray);
-            height: 5.3rem;
+            height: 5.6rem;
+            background: var(--white);
         }
         .component_body {
             flex: 1;
             overflow-y: auto;
             padding: 2rem;
+            background: var(--back-gray);
         }
         .component_btn {
             padding: 2rem;
@@ -133,20 +154,51 @@ header  {
             align-items: center;
             gap: 1rem;
             height: 6.9rem;
+            background: var(--white);
+        }
+    }
+}
+
+.container .side_menu {
+    width: fit-content;
+    height: fit-content;
+    background: var(--white);
+    border-radius: 10rem;
+    cursor: pointer;
+    padding: 1rem;
+    box-shadow: 1px 1px 5px 3px var(--gray);
+    transition: all 0.5s;
+    span {
+        font-size: 3rem;
+        color: var(--font-gray);
+        transition: all 0.5s;
+    }
+    &:hover {
+        transform: translate(0, -3px);
+        span {
+            color: var(--point);
         }
     }
 }
 
 .inventory_list {
-    grid-area: list;
+    height: stretch !important;
     .component_body {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
+        grid-gap: 2rem;
     }
     .inventory {
         position: relative;
         width: var(--thumb-width);
         height: var(--thumb-height);
+        cursor: pointer;
+        border-radius: var(--radius-big);
+        outline-width: 0;
+        transition: outline-width 0.2s;
+        &:hover {
+            outline: var(--point) solid 0.3rem;
+        }
         > div {
             border-radius: var(--radius-big);
         }
@@ -155,9 +207,18 @@ header  {
             color: var(--black);
             width: var(--thumb-width);
             height: var(--thumb-height);
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            align-items: flex-start;
+            padding: 0.8rem 1rem;
+            gap: 0.4rem;
+            font-weight: 600;
             &.immer {
+                justify-content: flex-start;
                 background: var(--red);
                 color: var(--white);
+                span {font-size: 1.6rem}
             }
         }
         .inventory_thumbnail {
@@ -178,7 +239,8 @@ header  {
                 position: absolute;
                 bottom: 0;
                 left: 0;
-                background-color: var(--thumbnail-title-back);
+                background: var(--thumbnail-title-back);
+                background-blend-mode: multiply;
                 display: flex;
                 flex-direction: column;
                 justify-content: flex-end;
@@ -186,9 +248,10 @@ header  {
                 gap: 0.4rem;
                 width: 100%;
                 height: 100%;
+                padding: 1rem;
                 z-index: 2;
                 span {
-                    color: var(--white);
+                    color: var(--black);
                     &.title {
                         font-weight: 700;
                     }
@@ -207,20 +270,31 @@ header  {
     justify-content: flex-start;
     align-items: flex-start;
     gap: 0.4rem;
+    width: 100%;
+    max-width: 50rem;
     > span {
-        color: var(--gray);
+        color: var(--font-gray);
     }
     .counter {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 0.4rem;
         span:not(.counter_value) {
             border: var(--border-gray);
             background: var(--white);
             color: #707070;
             border-radius: var(--radius-small);
+            padding: 0.4rem 0.6rem;
+            font-size: var(--font-normal);
         }
         .counter_value {
             color: var(--black);
             border: none;
             background: none;
+            max-width: 3rem;
+            text-align: center;
         }
     }
     textarea {
@@ -231,8 +305,22 @@ header  {
     }
 }
 
+/*.container:has(.inventory_detail:not(.dis_none)) .inventory_list .component_body {*/
+/*    grid-template-columns: repeat(2, 1fr);*/
+/*}*/
+/*.container:has(.inventory_register:not(.dis_none)) .inventory_list .component_body {*/
+/*    grid-template-columns: repeat(2, 1fr);*/
+/*}*/
+
 .inventory_detail {
     grid-area: detail;
+    .component_body {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        gap: 2rem;
+    }
     .inventory_thumbnail {
         display: flex;
         flex-direction: row;
@@ -255,6 +343,14 @@ header  {
             select {
                 min-width: 8rem;
             }
+            div {
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: flex-start;
+                gap: 0.4rem;
+                padding-left: 1rem;
+            }
             .title {
                 font-weight: 700;
                 font-size: var(--font-subtitle);
@@ -265,7 +361,7 @@ header  {
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
-        gap: 1rem;
+        gap: 2rem;
         justify-content: flex-start;
         align-items: flex-start;
     }
@@ -277,7 +373,7 @@ header  {
         flex-direction: column;
         justify-content: flex-start;
         align-items: flex-start;
-        gap: 1rem;
+        gap: 2rem;
     }
     .inventory_state {
         display: flex;
@@ -289,6 +385,7 @@ header  {
             width: 10rem;
             aspect-ratio: 1/1;
             object-fit: cover;
+            border-radius: var(--radius-big);
         }
         > div {
             flex: 1;
@@ -299,4 +396,8 @@ header  {
             gap: 0.6rem;
         }
     }
+}
+
+.dis_none {
+    display: none !important;
 }
