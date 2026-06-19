@@ -3,6 +3,7 @@ import Header from "./component/Header.tsx";
 import SideMenu from "./component/SideMenu.tsx";
 import InventoryDetail from "./component/InventoryDetail.tsx";
 import InventoryRegister from "./component/InventoryRegister.tsx";
+import Join from "./component/Join.tsx";
 
 function App() {
 
@@ -11,9 +12,12 @@ function App() {
     * 1. 단일 페이지인데 재고 목록, 제품 상세(수정가능) , 제품 등록 있어야함.
     * 2. 큰 컴포넌트가 3개.
     *
+      ** 제품이 하나도 없으면 등록만 보이기. 제품이 하나라도 있으면 목록만 보이기. 제품 상세가 있으면 등록 안보이기.
     * 목록의 기능 - 제품 이름, 썸네일, 옵션, 현재 갯수, 안전재고 도달 유무, 필터 필요할거같음(재고순, 수정순, 등록순)
     * 상세의 기능 - 썸네일, 카테고리, 이름, 옵션, 현재 갯수, 안전재고, 최근 구매일, 메모들의 view, modify
     * 등록의 기능 - 이름, 옵션 (일치하는 거 있으면 찾아줘야함), 썸네일, 카테고리, 현재 갯수, 안전재고, 최근 구매일, 메모들의 저장
+
+      보안 측면에서, 실력 측면에서 로그인도 도입하기로 결정. = 회원가입 필요. id랑 password. 가입일, 인벤토리 갯수,
     *
     * 달력 react dayPicker 사용하기
     *
@@ -25,6 +29,7 @@ function App() {
     return (
         <div>
             <Header/>
+            <Join/>
             <div className="container">
                 <InventoryList/>
                 <SideMenu/>

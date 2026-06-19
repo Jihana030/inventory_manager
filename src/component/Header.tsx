@@ -9,6 +9,11 @@ export default function Header(){
     const nowDate = dayjs(new Date()).format('YYYY년 MM월 DD일 (dd) HH:MM');
 
     return (
-        <header>{nowDate}</header>
+        <header>
+            <div>
+                <span>userId의 재고 서랍</span>
+                <span>{nowDate}</span>
+            </div>
+        </header>
     )
 }

@@ -50,6 +50,7 @@ export default function InventoryRegister() {
             </div>
             <div className="component_btn">
                 <button className="btn_y">저장</button>
+                <button>닫기</button>
             </div>
         </div>
     )

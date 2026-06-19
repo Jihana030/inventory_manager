@@ -43,7 +43,7 @@ input, input:focus, button, textarea, select {
     outline: none;
     border: none;
 }
-input[type="text"], input[type="number"], textarea, select {
+input[type="text"], input[type="number"], input[type="password"], textarea, select {
     border: var(--border-gray);
     color: var(--black);
     font-size: var(--font-normal);
@@ -81,16 +81,24 @@ input[type="number"]::-webkit-inner-spin-button {
 
 button {
     cursor: pointer;
-    padding: 0.8rem 1.2rem;
+    padding: 0.6rem 1.2rem;
     background: var(--white);
     color: var(--black);
     font-size: var(--font-normal);
+    border: var(--border-gray);
     &.btn_y {
         background: var(--yellow);
+        border: 1px solid var(--yellow);
     }
     &.btn_r {
         background: var(--red);
         color: var(--white);
+        border: 1px solid var(--red);
+    }
+    &.btn_p {
+        background: var(--point);
+        color: var(--white);
+        border: 1px solid var(--point);
     }
 }
 
@@ -101,16 +109,76 @@ body {
     font-size: var(--font-normal);
     font-weight: 500;
     font-family: Pretendard, serif;
+    margin: 0 auto;
+    background: var(--back-gray);
 }
 
 /*-----------------------------------*/
 
 header  {
-    padding: 2rem 3rem;
     background: #fff;
-    height: 5.4rem;
+    max-width: 100dvw;
     width: 100%;
-    font-weight: 600;
+    min-width: 32rem;
+    background: var(--white);
+    div {
+        padding: 2rem 3rem;
+        height: 5.4rem;
+        max-width: 144rem;
+        margin: 0 auto;
+        font-weight: 600;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+
+.user_join {
+    background: var(--back-gray);
+    max-width: 144rem;
+    width: 100%;
+    min-width: 32rem;
+    height: 100%;
+    margin: 0 auto;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+    justify-content: center;
+    align-items: center;
+    .join_input_box, .join_btn_box {
+        display: flex;
+        gap: 3rem;
+    }
+    .join_input_box {
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        .input_box {
+            width: 100%;
+            position: relative;
+
+            label {
+                position: absolute;
+                left: 1rem;
+                top: 50%;
+                transform: translateY(-50%);
+                transition: all 0.3s;
+                pointer-events: none;
+                color: var(--font-gray);
+            }
+            input {
+                width: 100%;
+            }
+
+            input:focus + label,
+            input:not(:placeholder-shown) + label {
+                top: -2rem;
+                transform: translateY(0);
+            }
+        }
+    }
 }
 
 .container {
@@ -120,10 +188,14 @@ header  {
     overflow: hidden;
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: flex-start;
     gap: 2rem;
     position: relative;
+    max-width: 144rem;
+    width: 100%;
+    min-width: 32rem;
+    margin: 0 auto;
     > div {
         border-radius: var(--radius-big);
         border: var(--border-gray);
@@ -304,13 +376,6 @@ header  {
         width: 100%;
     }
 }
-
-/*.container:has(.inventory_detail:not(.dis_none)) .inventory_list .component_body {*/
-/*    grid-template-columns: repeat(2, 1fr);*/
-/*}*/
-/*.container:has(.inventory_register:not(.dis_none)) .inventory_list .component_body {*/
-/*    grid-template-columns: repeat(2, 1fr);*/
-/*}*/
 
 .inventory_detail {
     grid-area: detail;
