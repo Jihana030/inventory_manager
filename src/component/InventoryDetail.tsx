@@ -2,7 +2,7 @@
 export default function InventoryDetail(){
     return (
         <div className="inventory_detail dis_none">
-            <div className="component_title">제품 상세</div>
+            <div className="component_title"><h3>제품 상세</h3></div>
             <div className="component_body">
                 <div className="inventory_thumbnail">
                     <img src="https://images.pexels.com/photos/8166452/pexels-photo-8166452.jpeg" alt="thumbnail"/>

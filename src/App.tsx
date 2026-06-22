@@ -1,6 +1,5 @@
 import InventoryList from "./component/InventoryList.tsx";
 import Header from "./component/Header.tsx";
-import SideMenu from "./component/SideMenu.tsx";
 import InventoryDetail from "./component/InventoryDetail.tsx";
 import InventoryRegister from "./component/InventoryRegister.tsx";
 import Join from "./component/Join.tsx";
@@ -32,7 +31,6 @@ function App() {
             <Join/>
             <div className="container">
                 <InventoryList/>
-                <SideMenu/>
                 <InventoryDetail/>
                 <InventoryRegister/>
             </div>

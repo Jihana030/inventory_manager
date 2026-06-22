@@ -19,6 +19,11 @@
     --border-gray: 1px solid #ddd;
     --thumb-width: 15rem;
     --thumb-height: 18rem;
+    @media (max-width: 84rem) {
+        --font-title: 1.8rem;
+        --font-subtitle: 1.4rem;
+        --font-normal: 1.2rem;
+    }
 }
 
 /* 기본 속성 */
@@ -121,7 +126,7 @@ header  {
     width: 100%;
     min-width: 32rem;
     background: var(--white);
-    div {
+    > div {
         padding: 2rem 3rem;
         height: 5.4rem;
         max-width: 144rem;
@@ -131,6 +136,22 @@ header  {
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
+        @media (max-width: 84rem) {
+            padding: 1rem 2rem;
+            height: 3.3rem;
+        }
+    }
+    .user_state {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 1rem;
+        .material-symbols-rounded {
+            font-size: 1.8rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
     }
 }
 
@@ -139,14 +160,25 @@ header  {
     max-width: 144rem;
     width: 100%;
     min-width: 32rem;
-    height: 100%;
+    height: calc(100dvh - 5.4rem);
     margin: 0 auto;
     padding: 2rem;
     display: flex;
-    flex-direction: column;
-    gap: 4rem;
     justify-content: center;
     align-items: center;
+    > div {
+        width: fit-content;
+        display: flex;
+        flex-direction: column;
+        gap: 4rem;
+        justify-content: center;
+        align-items: center;
+        background: var(--white);
+        padding: 3.4rem 2rem 3rem;
+        border-radius: var(--radius-big);
+        border: var(--border-gray);
+        box-shadow: 0.1rem  0.1rem 1.2rem 0.3rem var(--gray);
+    }
     .join_input_box, .join_btn_box {
         display: flex;
         gap: 3rem;
@@ -196,6 +228,12 @@ header  {
     width: 100%;
     min-width: 32rem;
     margin: 0 auto;
+    @media (max-width: 84rem) {
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        height: 100%;
+    }
     > div {
         border-radius: var(--radius-big);
         border: var(--border-gray);
@@ -205,17 +243,69 @@ header  {
         height: auto;
         max-height: stretch;
         .component_title {
-            padding: 2rem;
-            font-size: var(--font-subtitle);
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.2rem 2rem;
             border-bottom: var(--border-gray);
-            height: 5.6rem;
+            min-height: 5.6rem;
             background: var(--white);
+            @media (max-width: 84rem) {
+                padding: 0.2rem 1rem;
+                min-height: 4rem;
+            }
+            h3 {
+                font-size: var(--font-subtitle);
+                &:has(.material-symbols-rounded) {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: flex-start;
+                    align-items: center;
+                    span {
+                        color: var(--font-gray);
+                    }
+                }
+            }
+            .side_menu {
+                width: fit-content;
+                height: fit-content;
+                min-width: fit-content;
+                min-height: fit-content;
+                background: var(--white);
+                border-radius: 10rem;
+                cursor: pointer;
+                padding: 0.2rem;
+                border: var(--border-gray);
+                transition: all 0.5s;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                @media (max-width: 84rem) {
+                    border: none;
+                }
+                span {
+                    font-size: 3rem;
+                    color: var(--font-gray);
+                    transition: all 0.5s;
+                    @media (max-width: 84rem) {
+                        font-size: 2.2rem;
+                    }
+                }
+                &:hover {
+                    transform: translate(0, -0.3rem);
+                    span {
+                        color: var(--point);
+                    }
+                }
+            }
         }
         .component_body {
             flex: 1;
             overflow-y: auto;
             padding: 2rem;
             background: var(--back-gray);
+
         }
         .component_btn {
             padding: 2rem;
@@ -231,34 +321,19 @@ header  {
     }
 }
 
-.container .side_menu {
-    width: fit-content;
-    height: fit-content;
-    background: var(--white);
-    border-radius: 10rem;
-    cursor: pointer;
-    padding: 1rem;
-    box-shadow: 1px 1px 5px 3px var(--gray);
-    transition: all 0.5s;
-    span {
-        font-size: 3rem;
-        color: var(--font-gray);
-        transition: all 0.5s;
-    }
-    &:hover {
-        transform: translate(0, -3px);
-        span {
-            color: var(--point);
-        }
-    }
-}
-
 .inventory_list {
     height: stretch !important;
+    @media (max-width: 84rem) {
+        height: calc(100dvh - 5.4rem) !important;
+    }
     .component_body {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         grid-gap: 2rem;
+        @media (max-width: 84rem) {
+            grid-template-columns: repeat(2, 1fr);
+            grid-gap: 1rem;
+        }
     }
     .inventory {
         position: relative;

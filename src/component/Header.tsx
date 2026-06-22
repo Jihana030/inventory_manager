@@ -6,13 +6,16 @@ export default function Header(){
     dayjs.extend(isLeapYear); // 플러그인 등록
     dayjs.locale('ko'); // 언어 등록
 
-    const nowDate = dayjs(new Date()).format('YYYY년 MM월 DD일 (dd) HH:MM');
+    const nowDate = dayjs(new Date()).format('YYYY년 MM월 DD일 (dd) HH:mm');
 
     return (
         <header>
             <div>
-                <span>userId의 재고 서랍</span>
                 <span>{nowDate}</span>
+                <div className="user_state">
+                    <span>userId의 재고 서랍</span>
+                    <span className="material-symbols-rounded">logout</span>
+                </div>
             </div>
         </header>
     )
