@@ -1,7 +1,16 @@
 import Inventory from "./Inventory.tsx";
 import SideMenu from "./SideMenu.tsx";
+import {useState} from "react";
 
-export default async function InventoryList() {
+type Props={
+    items: [];
+}
+
+export default async function InventoryList({items}:Props) {
+
+    console.log(items);
+    const [listState, setListState] = useState<number>(0);
+    setListState(items.length);
 
     return (
         <div className="inventory_list">
@@ -10,7 +19,7 @@ export default async function InventoryList() {
                 <SideMenu/>
             </div>
             <div className="component_body">
-                <Inventory/>
+                <Inventory />
             </div>
         </div>
     )

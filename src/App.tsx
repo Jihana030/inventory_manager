@@ -57,11 +57,7 @@ function App() {
             {
                 session &&
                 <div className="container">
-                    {inventoryList.length === 0 ? (
-                        <InventoryList/>
-                    ):(
-                        <InventoryList items={inventoryList} onAdd={()=>setIsOpenForm(true)} onDetail={()=> setIsOpenDetail(true)} />
-                    )}
+                    <InventoryList items={inventoryList} onAdd={()=>setIsOpenForm(true)} onDetail={()=> setIsOpenDetail(true)} />
 
                     {isOpenForm && <InventoryRegister/>}
 
