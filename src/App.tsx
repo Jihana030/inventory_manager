@@ -29,6 +29,10 @@ function App() {
     * */
 
     const [session, setSession] = useState<Session | null>(null);
+    const [inventoryList, setInventoryList] = useState([]);
+    const [isOpenForm, setIsOpenForm] = useState(false);
+    const [isOpenDetail, setIsOpenDetail] = useState(false);
+
 
     useEffect(()=>{
         // 세션 정보 get
@@ -53,9 +57,15 @@ function App() {
             {
                 session &&
                 <div className="container">
-                    <InventoryList/>
-                    <InventoryDetail/>
-                    <InventoryRegister/>
+                    {inventoryList.length === 0 ? (
+                        <InventoryList/>
+                    ):(
+                        <InventoryList items={inventoryList} onAdd={()=>setIsOpenForm(true)} onDetail={()=> setIsOpenDetail(true)} />
+                    )}
+
+                    {isOpenForm && <InventoryRegister/>}
+
+                    {isOpenDetail && <InventoryDetail/>}
                 </div>
             }
         </div>

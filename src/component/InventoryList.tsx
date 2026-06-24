@@ -1,7 +1,8 @@
 import Inventory from "./Inventory.tsx";
 import SideMenu from "./SideMenu.tsx";
 
-export default function InventoryList() {
+export default async function InventoryList() {
+
     return (
         <div className="inventory_list">
             <div className="component_title">

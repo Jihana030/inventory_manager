@@ -2,7 +2,7 @@ export default function InventoryRegister() {
 
 
     return (
-        <div className="inventory_register">
+        <div className="inventory_register dis_none">
             <div className="component_title">
                 <h3><span className="material-symbols-rounded">chevron_left</span>제품 등록</h3>
             </div>
