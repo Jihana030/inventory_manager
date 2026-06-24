@@ -10,15 +10,6 @@ export default function InventoryList() {
             </div>
             <div className="component_body">
                 <Inventory/>
-                <Inventory/>
-                <Inventory/>
-                <Inventory/>
-                <Inventory/>
-                <Inventory/>
-                <Inventory/>
-                <Inventory/>
-                <Inventory/>
-                <Inventory/>
             </div>
         </div>
     )

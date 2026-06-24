@@ -25,31 +25,56 @@ export default function Join () {
             //이미 가입한 회원
             if(error){
                 setAuthError(error.message);
+                showErrToast(authError);
+                return;
+            }
+            showToast("회원가입에 성공했습니다!")
+
+        } catch (err) {
+            showErrToast("회원가입에 실패했습니다 ㅜㅜ");
+            console.error(err);
+            throw err;
+        }
+        const {data:{session}} = await supabase.auth.getSession();
+        console.log(session)
+    }
+
+    // 로그인
+    const onLogin = async (data: Inputs) =>{
+        setAuthError("");
+        try {
+            const {error} = await supabase.auth.signInWithPassword({
+                email: data.email,
+                password: data.password,
+            })
+
+            // 없는 회원
+            if(error) {
+                setAuthError(error.message);
+                showErrToast(authError);
                 return;
             }
 
-            showToast("회원가입에 성공했습니다!")
+            showToast("로그인에 성공했습니다.")
 
-            console.log(data);
         } catch (err) {
             console.error(err)
-            showErrToast("회원가입에 실패했습니다 ㅜㅜ")
+            showErrToast("로그인에 실패했습니다.")
+            throw err;
         }
-
+        const {data:{user}}= await supabase.auth.getUser();
+        console.log(user);
     }
 
     return (
         <div className="user_join">
-            <form onSubmit={handleSubmit(onSignUp)}>
+            <form>
                 <div className="join_input_box">
                     <div className="input_box">
                         <input type="text" id="join_id" placeholder="" defaultValue={""} {...register("email", {required: "이메일 주소를 입력해주세요.", pattern:{value:/^[a-zA-Z0-9+-|_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/, message: "올바른 이메일 형식을 작성해주세요."}})}/>
                         <label htmlFor="join_id">이메일</label>
                         {errors.email && (
                             <p className="err_msg">{errors.email.message}</p>
-                        )}
-                        {authError && (
-                            <p className="err_msg">{authError}</p>
                         )}
                     </div>
                     <div className="input_box">
@@ -61,8 +86,8 @@ export default function Join () {
                     </div>
                 </div>
                 <div className="join_btn_box">
-                    <button>회원가입</button>
-                    {/*<button type="submit" className="btn_p">로그인</button>*/}
+                    <button onClick={handleSubmit(onSignUp)}>회원가입</button>
+                    <button onClick={handleSubmit(onLogin)} type="submit" className="btn_p">로그인</button>
                 </div>
             </form>
             <ToastContainer position="top-center" theme="colored" />
