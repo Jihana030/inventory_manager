@@ -29,7 +29,6 @@ function App() {
     * */
 
     const [session, setSession] = useState<Session | null>(null);
-    const [inventoryList, setInventoryList] = useState([]);
     const [isOpenForm, setIsOpenForm] = useState(false);
     const [isOpenDetail, setIsOpenDetail] = useState(false);
 
@@ -57,9 +56,12 @@ function App() {
             {
                 session &&
                 <div className="container">
-                    <InventoryList items={inventoryList} onAdd={()=>setIsOpenForm(true)} onDetail={()=> setIsOpenDetail(true)} />
+                    <InventoryList onAdd={()=> {
+                        console.log('add');
+                        setIsOpenForm(true);
+                    }} onDetail={()=> setIsOpenDetail(true)} />
 
-                    {isOpenForm && <InventoryRegister/>}
+                    {isOpenForm && <InventoryRegister onClose={()=>setIsOpenForm(false)}/>}
 
                     {isOpenDetail && <InventoryDetail/>}
                 </div>

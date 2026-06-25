@@ -5,7 +5,6 @@
     --gray: #ddd;
     --font-gray: #707070;
     --back-gray: #F3F3F3;
-    --back-black: #dddddd;
     --yellow: #ffe99e;
     --red: #e01818;
     --point: #a970ff;
@@ -13,7 +12,7 @@
     --font-subtitle: 1.6rem;
     --font-normal: 1.3rem;
     --font-small: 1rem;
-    --thumbnail-title-back: linear-gradient(#ffffff00, var(--back-black));
+    --thumbnail-title-back: linear-gradient(#ffffff00, var(--gray));
     --radius-big: 1.6rem;
     --radius-small: 0.8rem;
     --border-gray: 1px solid #ddd;
@@ -530,11 +529,22 @@ header  {
         justify-content: flex-start;
         align-items: flex-start;
         gap: 1rem;
-        img {
+        input[type="file"]{
+            display: none;
+        }
+        label {
             width: 10rem;
             aspect-ratio: 1/1;
             object-fit: cover;
             border-radius: var(--radius-big);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 0.4rem dashed var(--gray);
+            cursor: pointer;
+            span {
+                color: var(--font-gray);
+            }
         }
         > div {
             flex: 1;
