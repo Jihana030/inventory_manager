@@ -51,7 +51,7 @@ export default function InventoryList({onAdd, onDetail}:Props) {
                     </div>
                 ) : (
                     inventoryList.map(item => (
-                        <Inventory key={item.id} item={item} onDetail={onDetail}/>
+                        <Inventory key={item.no} item={item} onDetail={onDetail}/>
                     ))
                 )}
 

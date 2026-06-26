@@ -1,7 +1,6 @@
 import {supabase} from "../lib/supabase.ts";
 import {useForm} from "react-hook-form";
 import {useState} from "react";
-import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import {showErrToast, showToast} from "../lib/toast.ts";
 
@@ -90,7 +89,6 @@ export default function Join () {
                     <button onClick={handleSubmit(onLogin)} type="submit" className="btn_p">로그인</button>
                 </div>
             </form>
-            <ToastContainer position="top-center" theme="colored" />
         </div>
     )
 }

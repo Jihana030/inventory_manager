@@ -6,6 +6,8 @@ import Join from "./component/Join.tsx";
 import {useEffect, useState} from "react";
 import {supabase} from "./lib/supabase.ts";
 import type {Session} from "@supabase/supabase-js";
+import 'react-day-picker/dist/style.css';
+import {ToastContainer} from "react-toastify";
 
 function App() {
     /* 재고 관리 페이지
@@ -31,6 +33,10 @@ function App() {
     const [session, setSession] = useState<Session | null>(null);
     const [isOpenForm, setIsOpenForm] = useState(false);
     const [isOpenDetail, setIsOpenDetail] = useState(false);
+    const [refreshKey, setRefreshKey] = useState(0);
+    const refreshInventory = ()=>{
+        setRefreshKey(prev => prev + 1);
+    }
 
 
     useEffect(()=>{
@@ -56,16 +62,21 @@ function App() {
             {
                 session &&
                 <div className="container">
-                    <InventoryList onAdd={()=> {
-                        console.log('add');
-                        setIsOpenForm(true);
-                    }} onDetail={()=> setIsOpenDetail(true)} />
+                    <InventoryList
+                        onAdd={()=> {
+                            console.log('add');
+                            setIsOpenForm(true);
+                        }}
+                        onDetail={()=> setIsOpenDetail(true)}
+                        key={refreshKey}
+                    />
 
-                    {isOpenForm && <InventoryRegister onClose={()=>setIsOpenForm(false)}/>}
+                    {isOpenForm && <InventoryRegister onClose={()=>setIsOpenForm(false)} onSuccess={refreshInventory}/>}
 
                     {isOpenDetail && <InventoryDetail/>}
                 </div>
             }
+            <ToastContainer position="top-center" theme="colored" />
         </div>
     )
 }

@@ -2,6 +2,7 @@
 export default function InventoryDetail(){
     return (
         <div className="inventory_detail dis_none">
+            {/* 닫기 필요 */}
             <div className="component_title"><h3>제품 상세</h3></div>
             <div className="component_body">
                 <div className="inventory_thumbnail">

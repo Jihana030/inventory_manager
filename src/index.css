@@ -443,6 +443,8 @@ header  {
             border-radius: var(--radius-small);
             padding: 0.4rem 0.6rem;
             font-size: var(--font-normal);
+            cursor: pointer;
+            user-select: none;
         }
         .counter_value {
             color: var(--black);
@@ -542,8 +544,17 @@ header  {
             align-items: center;
             border: 0.4rem dashed var(--gray);
             cursor: pointer;
+            position: relative;
             span {
                 color: var(--font-gray);
+            }
+            img {
+                position: absolute;
+                width: 10rem;
+                aspect-ratio: 1/1;
+                object-fit: cover;
+                cursor: pointer;
+                border-radius: var(--radius-big);
             }
         }
         > div {
@@ -552,11 +563,45 @@ header  {
             flex-direction: column;
             justify-content: flex-start;
             align-items: flex-start;
-            gap: 0.6rem;
+            gap: 1rem;
         }
     }
 }
 
-.dis_none {
-    display: none !important;
+.rdp-root {
+    background: var(--white);
+    padding: 0.6rem 1.6rem;
+    border-radius: var(--radius-small);
+}
+.rdp-caption_label {
+    font-size: var(--font-normal);
+}
+.rdp-day {
+    width: 2rem !important;
+    height: 2rem !important;
+}
+.rdp-day_button {
+    width: 2.1rem !important;
+    height: 2.1rem !important;
+    color: var(--black) !important;
+}
+.rdp-selected {
+    font-size: var(--font-normal) !important;
+}
+.rdp-selected .rdp-day_button {
+    border: 1px solid var(--point) !important;
+    background: var(--point) !important;
+    color: var(--white) !important;
+}
+.rdp-today:not(.rdp-outside) {
+    color: var(--white) !important;
+}
+.rdp-chevron {
+    fill: var(--point) !important;
+    width: 1.8rem;
+    height: 1.8rem;
+}
+.rdp-button_next, .rdp-button_previous {
+    width: 1.8rem !important;
+    height: 1.8rem !important;
 }
