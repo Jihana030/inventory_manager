@@ -29,7 +29,7 @@ export default function ImageUploader({register}:Props){
                     const nextPreview = URL.createObjectURL(file);
                     setPreview(nextPreview);
                 }
-            })}/>
+                , required: "이미지를 첨부해주세요."})}/>
             <span className="material-symbols-rounded">image_search</span>
             {preview && (<img src={preview} alt="미리보기"/>)}
         </label>

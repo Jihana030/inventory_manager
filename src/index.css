@@ -337,6 +337,7 @@ header  {
     .component_body {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: max-content;
         grid-gap: 2rem;
         @media (max-width: 84rem) {
             grid-template-columns: repeat(2, 1fr);

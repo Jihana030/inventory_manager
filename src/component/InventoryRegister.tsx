@@ -8,6 +8,7 @@ import CategorySelect from "./CategorySelect.tsx";
 import {useState} from "react";
 import {DayPicker} from "react-day-picker";
 import { ko } from 'date-fns/locale';
+import {showFirstError} from "../lib/form.ts";
 
 type Props = {
     onClose: ()=> void;
@@ -62,11 +63,7 @@ export default function InventoryRegister({onClose, onSuccess}:Props) {
     };
 
     const onInvalid = (errors:FieldErrors<InventoryType>) => {
-        const firstError = Object.values(errors)[0];
-
-        if(firstError?.message){
-            showErrToast(firstError.message.toString());
-        }
+        showFirstError(errors);
     };
 
     return (
