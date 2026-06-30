@@ -1,4 +1,4 @@
-import {useForm} from "react-hook-form";
+import {type FieldErrors, useForm} from "react-hook-form";
 import type {InventoryType} from "../types/InventoryType.ts";
 import {supabase} from "../lib/supabase.ts";
 import {showErrToast, showToast} from "../lib/toast.ts";
@@ -11,20 +11,23 @@ import { ko } from 'date-fns/locale';
 
 type Props = {
     onClose: ()=> void;
-    onSuccess: ()=>void;
+    onSuccess: ()=>Promise<void>;
 }
 
 export default function InventoryRegister({onClose, onSuccess}:Props) {
-    const {register, handleSubmit, reset} = useForm<InventoryType>();
+    const {register, handleSubmit, reset,} = useForm<InventoryType>();
     const [countNum, setCountNum] = useState<number>(0);
     const today = new Date();
     const [selectedDay, setSelectedDay] = useState<Date | undefined>(today);
 
     // 저장
     const onSubmit = async (data:InventoryType)=>{
+        console.log(1)
         try {
+            console.log(2)
             // image
             const imgUrl = await uploadThumbnail(data.thumbnail[0]);
+            console.log(3)
 
             const {error} = await supabase.from('inventory').insert([
                 {
@@ -38,13 +41,16 @@ export default function InventoryRegister({onClose, onSuccess}:Props) {
                     memo: data.memo,
                 }
             ]).select();
+            console.log(4)
             if(error) {
                 console.error(error);
+                console.log(5)
                 return;
             }
+            await onSuccess();
+            console.log(7)
             showToast("등록에 성공했습니다.")
             onClose();
-            onSuccess();
             reset();
 
         } catch (err){
@@ -55,12 +61,20 @@ export default function InventoryRegister({onClose, onSuccess}:Props) {
 
     };
 
+    const onInvalid = (errors:FieldErrors<InventoryType>) => {
+        const firstError = Object.values(errors)[0];
+
+        if(firstError?.message){
+            showErrToast(firstError.message.toString());
+        }
+    };
+
     return (
         <div className="inventory_register">
             <div className="component_title">
                 <h3>제품 등록</h3>
             </div>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
 
                 <div className="component_body">
                     <div className="state_box">
@@ -79,7 +93,7 @@ export default function InventoryRegister({onClose, onSuccess}:Props) {
                                 <span>재고 현황</span>
                                 <div className="counter">
                                     <span className="material-symbols-rounded" onClick={()=>setCountNum(countNum !== 0 ? countNum - 1 : countNum)}>remove</span>
-                                    <input type="number" className="counter_value" value={countNum} {...register("count", {required: "수량을 입력해주세요.", valueAsNumber: true, min:{value:0, message:"0 보다 큰 숫자를 입력하세요."}})}/>
+                                    <input type="number" className="counter_value" value={countNum} {...register("count", {required: "수량을 입력해주세요.", valueAsNumber: true, min:{value:1, message:"0 보다 큰 숫자를 입력하세요."}})}/>
                                     <span className="material-symbols-rounded" onClick={()=>setCountNum(countNum+1)}>add</span>
                                 </div>
                             </div>

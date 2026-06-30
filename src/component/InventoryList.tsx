@@ -1,32 +1,14 @@
 import Inventory from "./Inventory.tsx";
-import {supabase} from "../lib/supabase.ts";
-import {useEffect, useState} from "react";
 import type {InventoryType} from "../types/InventoryType.ts";
 
 type Props = {
     onAdd: ()=>void;
     onDetail: ()=>void;
+    inventoryList : InventoryType[];
+    isLoading: boolean;
 };
 
-export default function InventoryList({onAdd, onDetail}:Props) {
-    const [inventoryList, setInventoryList] = useState<InventoryType[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
-
-    useEffect(()=>{
-        getInventory();
-    }, [])
-
-    async function getInventory(){
-        try {
-            const { data } = await supabase.from("inventory").select("*");
-            setInventoryList(data ?? []);
-        } catch (err){
-            console.error(err);
-            throw err;
-        } finally {
-            setIsLoading(false);
-        }
-    }
+export default function InventoryList({onAdd, onDetail, inventoryList, isLoading}:Props) {
 
     return (
         <div className="inventory_list">

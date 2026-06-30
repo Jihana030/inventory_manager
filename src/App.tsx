@@ -8,6 +8,7 @@ import {supabase} from "./lib/supabase.ts";
 import type {Session} from "@supabase/supabase-js";
 import 'react-day-picker/dist/style.css';
 import {ToastContainer} from "react-toastify";
+import type {InventoryType} from "./types/InventoryType.ts";
 
 function App() {
     /* 재고 관리 페이지
@@ -33,9 +34,29 @@ function App() {
     const [session, setSession] = useState<Session | null>(null);
     const [isOpenForm, setIsOpenForm] = useState(false);
     const [isOpenDetail, setIsOpenDetail] = useState(false);
-    const [refreshKey, setRefreshKey] = useState(0);
-    const refreshInventory = ()=>{
-        setRefreshKey(prev => prev + 1);
+    const refreshInventory = async ()=>{
+        setIsLoading(true);
+        await getInventory();
+    }
+    const [inventoryList, setInventoryList] = useState<InventoryType[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+
+    async function getInventory(){
+        try {
+            const { data, error } = await supabase.from("inventory").select("*");
+
+            if(error){
+                console.error(error);
+                setIsLoading(false);
+                return;
+            }
+            setInventoryList(data ?? []);
+        } catch (err){
+            console.error(err);
+            throw err;
+        } finally {
+            setIsLoading(false);
+        }
     }
 
 
@@ -55,6 +76,12 @@ function App() {
         return ()=> subscription.unsubscribe();
     }, []);
 
+    useEffect(() => {
+        if(session){
+            getInventory();
+        }
+    }, [session]);
+
     return (
         <div>
             <Header user={session?.user}/>
@@ -68,7 +95,7 @@ function App() {
                             setIsOpenForm(true);
                         }}
                         onDetail={()=> setIsOpenDetail(true)}
-                        key={refreshKey}
+                        inventoryList={inventoryList} isLoading={isLoading}
                     />
 
                     {isOpenForm && <InventoryRegister onClose={()=>setIsOpenForm(false)} onSuccess={refreshInventory}/>}
