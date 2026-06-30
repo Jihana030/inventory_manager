@@ -23,12 +23,9 @@ export default function InventoryRegister({onClose, onSuccess}:Props) {
 
     // 저장
     const onSubmit = async (data:InventoryType)=>{
-        console.log(1)
         try {
-            console.log(2)
             // image
             const imgUrl = await uploadThumbnail(data.thumbnail[0]);
-            console.log(3)
 
             const {error} = await supabase.from('inventory').insert([
                 {
@@ -42,14 +39,11 @@ export default function InventoryRegister({onClose, onSuccess}:Props) {
                     memo: data.memo,
                 }
             ]).select();
-            console.log(4)
             if(error) {
                 console.error(error);
-                console.log(5)
                 return;
             }
             await onSuccess();
-            console.log(7)
             showToast("등록에 성공했습니다.")
             onClose();
             reset();
