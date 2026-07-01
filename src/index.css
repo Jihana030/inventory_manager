@@ -26,6 +26,13 @@
 }
 
 /* 기본 속성 */
+@font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Thin.woff2') format('woff2');
+    font-weight: 100;
+    font-display: swap;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -41,6 +48,10 @@ a {
 
 li {
     list-style: none;
+}
+
+label {
+    font-weight: 600;
 }
 
 input, input:focus, button, textarea, select {
@@ -264,14 +275,17 @@ header  {
             }
             h3 {
                 font-size: var(--font-subtitle);
+                font-weight: 600;
+                width: 100%;
                 &:has(.material-symbols-rounded) {
                     display: flex;
                     flex-direction: row;
-                    justify-content: flex-start;
+                    justify-content: space-between;
                     align-items: center;
                     gap: 0.4rem;
                     span {
                         color: var(--font-gray);
+                        cursor: pointer;
                     }
                 }
             }
@@ -430,6 +444,7 @@ header  {
     max-width: 50rem;
     > span {
         color: var(--font-gray);
+        font-weight: 600;
     }
     .counter {
         display: flex;

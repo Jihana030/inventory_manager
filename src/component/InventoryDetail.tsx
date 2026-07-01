@@ -1,9 +1,14 @@
+type Props = {
+    onClose: ()=> void;
+}
+export default function InventoryDetail({onClose}:Props) {
 
-export default function InventoryDetail(){
     return (
         <div className="inventory_detail dis_none">
             {/* 닫기 필요 */}
-            <div className="component_title"><h3>제품 상세</h3></div>
+            <div className="component_title">
+                <h3>제품 상세<span className="material-symbols-rounded" title="닫기" onClick={onClose}>close</span></h3>
+            </div>
             <div className="component_body">
                 <div className="inventory_thumbnail">
                     <img src="https://images.pexels.com/photos/8166452/pexels-photo-8166452.jpeg" alt="thumbnail"/>

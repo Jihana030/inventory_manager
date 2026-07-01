@@ -100,7 +100,7 @@ function App() {
 
                     {isOpenForm && <InventoryRegister onClose={()=>setIsOpenForm(false)} onSuccess={refreshInventory}/>}
 
-                    {isOpenDetail && <InventoryDetail/>}
+                    {isOpenDetail && <InventoryDetail onClose={()=>setIsOpenDetail(false)}/>}
                 </div>
             }
             <ToastContainer position="top-center" theme="colored" />
