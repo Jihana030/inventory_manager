@@ -1,7 +1,18 @@
+import type {InventoryType} from "../types/InventoryType.ts";
+import CategorySelect from "./CategorySelect.tsx";
+import {DayPicker} from "react-day-picker";
+import {ko} from "date-fns/locale";
+import {useState} from "react";
+
 type Props = {
+    item: InventoryType;
     onClose: ()=> void;
 }
-export default function InventoryDetail({onClose}:Props) {
+export default function InventoryDetail({onClose, item}:Props) {
+    const imageUrl = item.thumbnail;
+    const currentBuy:string = item.current_buy;
+    const buyDate:Date = new Date(currentBuy);
+    const [selectedDay, setSelectedDay] = useState<Date | undefined>(buyDate);
 
     return (
         <div className="inventory_detail dis_none">
@@ -11,42 +22,36 @@ export default function InventoryDetail({onClose}:Props) {
             </div>
             <div className="component_body">
                 <div className="inventory_thumbnail">
-                    <img src="https://images.pexels.com/photos/8166452/pexels-photo-8166452.jpeg" alt="thumbnail"/>
+                    <img src={imageUrl} alt="thumbnail"/>
                     <div className="inventory_info">
-                        <select>
-                            <option value="" disabled selected>카테고리</option>
-                            <option value="">화장품</option>
-                            <option value="">식품</option>
-                            <option value="">생필품</option>
-                            <option value="">기타</option>
-                        </select>
+                       <CategorySelect />
                         <div>
-                            <span className="title">상품명</span>
-                            <span className="option">옵션명</span>
+                            <label className="title"><input type="text" value={item.name}/></label>
+                            <label className="option"><input type="text" value={item.option_name}/></label>
                         </div>
                     </div>
                 </div>
                 <div className="state_box">
                     <span>안전재고</span>
                     <div>
-                        <input type="number"/>
+                        <input type="number" value={item.safe_count}/>
                     </div>
                 </div>
                 <div className="state_box">
                     <span>재고 현황</span>
                     <div className="counter">
                         <span className="material-symbols-rounded">remove</span>
-                        <input type="number" className="counter_value" value={1}/>
+                        <input type="number" className="counter_value" value={item.count}/>
                         <span className="material-symbols-rounded">add</span>
                     </div>
                 </div>
                 <div className="state_box">
                     <span>최근 구매일</span>
-                    <div>dayPicker</div>
+                    <DayPicker mode={"single"} selected={selectedDay} onSelect={setSelectedDay} locale={ko}/>
                 </div>
                 <div className="state_box">
                     <span>메모</span>
-                    <textarea rows={5} spellCheck={false}></textarea>
+                    <textarea rows={5} spellCheck={false}>{item.memo}</textarea>
                 </div>
             </div>
             <div className="component_btn">

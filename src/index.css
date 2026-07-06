@@ -28,7 +28,7 @@
 /* 기본 속성 */
 @font-face {
     font-family: 'Pretendard';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Thin.woff2') format('woff2');
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Medium.woff2') format('woff2');
     font-weight: 100;
     font-display: swap;
 }
@@ -178,6 +178,7 @@ header  {
     align-items: center;
     > form {
         width: fit-content;
+        min-width: 30rem;
         display: flex;
         flex-direction: column;
         gap: 4rem;
@@ -192,6 +193,7 @@ header  {
     .join_input_box, .join_btn_box {
         display: flex;
         gap: 4.5rem;
+        width: 100%;
     }
     .join_input_box {
         flex-direction: column;
@@ -220,6 +222,10 @@ header  {
                 transform: translateY(0);
             }
         }
+    }
+    .join_btn_box {
+        justify-content: center;
+        align-items: center;
     }
     .err_msg {
         font-size: 1.2rem;
@@ -520,6 +526,14 @@ header  {
             .title {
                 font-weight: 700;
                 font-size: var(--font-subtitle);
+                input {
+                    border: none;
+                    background: none;
+                }
+            }
+            .option input {
+                border: none;
+                background: none;
             }
         }
     }

@@ -1,18 +1,20 @@
 import {useEffect, useState} from "react";
 import {type UseFormRegister} from "react-hook-form";
-import type {InventoryType} from "../types/InventoryType.ts";
+import type {InventoryFormType} from "../types/InventoryFormType.ts";
 
 type Props = {
-    register : UseFormRegister<InventoryType>;
+    register : UseFormRegister<InventoryFormType>;
+    defaultImage?:string;
 }
 
-export default function ImageUploader({register}:Props){
+export default function ImageUploader({register, defaultImage}:Props){
     // 이미지 미리보기
-    const [preview, setPreview] = useState<string>("");
+    const [preview, setPreview] = useState<string>();
+    const imageSrc = preview ?? defaultImage;
 
     useEffect(()=>{
         return ()=>{
-            if(preview) {
+            if(preview && preview.startsWith("blob:")) {
                 URL.revokeObjectURL(preview);
             }
         }
@@ -23,7 +25,7 @@ export default function ImageUploader({register}:Props){
                 onChange: (e)=> {
                     const file = e.target.files?.[0];
                     if(!file) return;
-                    if(preview){
+                    if(preview && preview.startsWith("blob:")){
                         URL.revokeObjectURL(preview);
                     }
                     const nextPreview = URL.createObjectURL(file);
@@ -31,7 +33,7 @@ export default function ImageUploader({register}:Props){
                 }
                 , required: "이미지를 첨부해주세요."})}/>
             <span className="material-symbols-rounded">image_search</span>
-            {preview && (<img src={preview} alt="미리보기"/>)}
+            {imageSrc && (<img src={imageSrc} alt="미리보기"/>)}
         </label>
     )
 }

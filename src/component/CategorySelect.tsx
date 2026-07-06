@@ -2,10 +2,10 @@ import {useEffect, useState} from "react";
 import type {Categories} from "../types/Categories.ts";
 import {supabase} from "../lib/supabase.ts";
 import type {UseFormRegister} from "react-hook-form";
-import type {InventoryType} from "../types/InventoryType.ts";
+import type {InventoryFormType} from "../types/InventoryFormType.ts";
 
 type Props = {
-    register : UseFormRegister<InventoryType>;
+    register : UseFormRegister<InventoryFormType>;
 }
 
 export default function CategorySelect({register}:Props){

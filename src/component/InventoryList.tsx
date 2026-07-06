@@ -3,7 +3,7 @@ import type {InventoryType} from "../types/InventoryType.ts";
 
 type Props = {
     onAdd: ()=>void;
-    onDetail: ()=>void;
+    onDetail: (item:InventoryType) => void;
     inventoryList : InventoryType[];
     isLoading: boolean;
 };

@@ -3,12 +3,14 @@ import type {InventoryType} from "../types/InventoryType.ts";
 
 type Props = {
     item: InventoryType;
-    onDetail: ()=>void;
+    onDetail: (item:InventoryType)=>void;
 }
 
 export default function Inventory({item, onDetail}:Props) {
+    const imgUrl = item.thumbnail;
+    console.log(item.thumbnail[0])
     return (
-        <div className="inventory" onClick={onDetail}>
+        <div className="inventory" onClick={()=> onDetail(item)}>
             {
                 item.count > item.safe_count ? (
                     <div className="inventory_state">{item.count}개</div>
@@ -22,7 +24,7 @@ export default function Inventory({item, onDetail}:Props) {
             {
                 item ? (
                     <div className="inventory_thumbnail">
-                        <img src={item.thumbnail} alt="thumbnail"/>
+                        <img src={imgUrl} alt="thumbnail"/>
                         <p className="inventory_info">
                             <span className="title">{item.name}</span>
                             <span className="option">{item.option_name}</span>

@@ -1,50 +1,71 @@
 import {type FieldErrors, useForm} from "react-hook-form";
-import type {InventoryType} from "../types/InventoryType.ts";
 import {supabase} from "../lib/supabase.ts";
 import {showErrToast, showToast} from "../lib/toast.ts";
 import {uploadThumbnail} from "../services/storage.ts";
 import ImageUploader from "./ImageUploader.tsx";
 import CategorySelect from "./CategorySelect.tsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {DayPicker} from "react-day-picker";
 import { ko } from 'date-fns/locale';
 import {showFirstError} from "../lib/form.ts";
+import type {InventoryFormType} from "../types/InventoryFormType.ts";
+import type {InventoryType} from "../types/InventoryType.ts";
 
 type Props = {
+    mode:  "create" | "edit";
+    item?: InventoryType;
     onClose: ()=> void;
     onSuccess: ()=>Promise<void>;
 }
 
-export default function InventoryRegister({onClose, onSuccess}:Props) {
-    const {register, handleSubmit, reset,} = useForm<InventoryType>();
+export default function InventoryEditor({onClose, onSuccess,mode, item}:Props) {
+    const {register, handleSubmit, reset,} = useForm<InventoryFormType>();
     const [countNum, setCountNum] = useState<number>(0);
     const today = new Date();
     const [selectedDay, setSelectedDay] = useState<Date | undefined>(today);
 
     // 저장
-    const onSubmit = async (data:InventoryType)=>{
+    const onSubmit = async (data:InventoryFormType)=>{
         try {
             // image
-            const imgUrl = await uploadThumbnail(data.thumbnail[0]);
-
-            const {error} = await supabase.from('inventory').insert([
-                {
-                    name: data.name,
-                    option_name : data.option_name,
-                    category : data.category,
-                    thumbnail: imgUrl,
-                    count: countNum,
-                    safe_count: data.safe_count,
-                    current_buy: selectedDay,
-                    memo: data.memo,
+            if(mode === "create"){
+                const imgUrl = await uploadThumbnail(data.thumbnail[0]);
+                const {error} = await supabase.from('inventory').insert([
+                    {
+                        name: data.name,
+                        option_name : data.option_name,
+                        category : data.category,
+                        thumbnail: imgUrl,
+                        count: countNum,
+                        safe_count: data.safe_count,
+                        current_buy: selectedDay,
+                        memo: data.memo,
+                    }
+                ]).select();
+                if(error) {
+                    console.error(error);
+                    return;
                 }
-            ]).select();
-            if(error) {
-                console.error(error);
-                return;
+                await onSuccess();
+                showToast("등록에 성공했습니다.")
+            } else {
+                let imgUrl = item?.thumbnail;
+                if(data.thumbnail?.length > 0) {
+                    imgUrl = await uploadThumbnail(data.thumbnail[0]);
+                }
+                await supabase.from('inventory').update([
+                    {
+                        name: item?.name,
+                        option_name: item?.option_name,
+                        category: item?.category,
+                        thumbnail: imgUrl,
+                        count: countNum,
+                        safe_count: item?.safe_count,
+                        current_buy: selectedDay,
+                        memo: item?.memo,
+                    }
+                ]).eq("no",item!.no)
             }
-            await onSuccess();
-            showToast("등록에 성공했습니다.")
             onClose();
             reset();
 
@@ -56,14 +77,27 @@ export default function InventoryRegister({onClose, onSuccess}:Props) {
 
     };
 
-    const onInvalid = (errors:FieldErrors<InventoryType>) => {
+    const onInvalid = (errors:FieldErrors<InventoryFormType>) => {
         showFirstError(errors);
     };
+
+    useEffect(() => {
+        if(mode==="edit" && item){
+            reset({
+                name: item.name,
+                option_name: item.option_name,
+                category: item.category,
+                count: countNum,
+                safe_count: item.safe_count,
+                memo: item.memo,
+            })
+        }
+    }, [item])
 
     return (
         <div className="inventory_register">
             <div className="component_title">
-                <h3>제품 등록</h3>
+                <h3>{mode==="create"? "제품 등록" : "제품 상세"}</h3>
             </div>
             <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
 
@@ -77,7 +111,7 @@ export default function InventoryRegister({onClose, onSuccess}:Props) {
                         <input type="text" spellCheck={false} {...register("option_name", {required: "옵션명을 입력해주세요.", validate: (value)=>value.trim() !== '' || "제품명을 입력해주세요."})}/>
                     </div>
                     <div className="inventory_state">
-                        <ImageUploader register={register}/>
+                        <ImageUploader register={register} defaultImage={mode==="edit" ? item?.thumbnail : undefined}/>
                         <div>
                             <CategorySelect register={register}/>
                             <div className="state_box">
@@ -106,7 +140,8 @@ export default function InventoryRegister({onClose, onSuccess}:Props) {
                     </div>
                 </div>
                 <div className="component_btn">
-                    <button className="btn_y">저장</button>
+                    <button className="btn_y">{mode === "create" ? "저장" : "수정"}</button>
+                    {mode === "edit" && (<button className="btn_r">삭제</button>)}
                     <button type="button" onClick={onClose}>닫기</button>
                 </div>
             </form>
