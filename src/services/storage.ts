@@ -9,7 +9,12 @@ export async function uploadThumbnail(file : File){
         throw error;
     }
 
-    const {data} = supabase.storage.from('thumbnail').getPublicUrl(fileName);
+    // const {data} = supabase.storage.from('thumbnail').getPublicUrl(fileName);
+    //
+    // return data.publicUrl;
+    return fileName;
+}
 
-    return data.publicUrl;
+export function getThumbnailUrl(path: string) {
+    return supabase.storage.from('thumbnail').getPublicUrl(path).data.publicUrl;
 }

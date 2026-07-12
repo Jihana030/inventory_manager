@@ -1,4 +1,5 @@
 import type {InventoryType} from "../types/InventoryType.ts";
+import {getThumbnailUrl} from "../services/storage.ts";
 
 
 type Props = {
@@ -7,8 +8,7 @@ type Props = {
 }
 
 export default function Inventory({item, onDetail}:Props) {
-    const imgUrl = item.thumbnail;
-    console.log(item.thumbnail[0])
+    const imgUrl = getThumbnailUrl(item.thumbnail);
     return (
         <div className="inventory" onClick={()=> onDetail(item)}>
             {

@@ -351,23 +351,25 @@ header  {
 
 .inventory_list {
     height: stretch !important;
+    flex: 1;
     @media (max-width: 84rem) {
         height: calc(100dvh - 5.4rem) !important;
     }
     .component_body {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        grid-template-rows: max-content;
+        grid-template-columns: repeat(auto-fit, minmax(var(--thumb-width), 1fr));
+        grid-template-rows: repeat(auto-fit, var(--thumb-height));
         grid-gap: 2rem;
+        justify-items: center;
         @media (max-width: 84rem) {
-            grid-template-columns: repeat(2, 1fr);
             grid-gap: 1rem;
         }
     }
     .inventory {
         position: relative;
-        width: var(--thumb-width);
-        height: var(--thumb-height);
+        width: 100%;
+        max-width: var(--thumb-width);
+        max-height: var(--thumb-height);
         cursor: pointer;
         border-radius: var(--radius-big);
         outline-width: 0;
@@ -381,7 +383,7 @@ header  {
         .inventory_state {
             background: var(--white);
             color: var(--black);
-            width: var(--thumb-width);
+            max-width: var(--thumb-width);
             height: var(--thumb-height);
             display: flex;
             flex-direction: row;
@@ -401,9 +403,10 @@ header  {
             position: absolute;
             bottom: 0;
             left: 0;
-            width: var(--thumb-width);
-            height: var(--thumb-width);
-            aspect-ratio: 1/1;
+            max-width: var(--thumb-width);
+            height: 100%;
+            max-height: var(--thumb-width);
+            /*aspect-ratio: 1/1;*/
             border-radius: var(--radius-big);
             overflow: hidden;
             img {
@@ -430,9 +433,19 @@ header  {
                     color: var(--black);
                     &.title {
                         font-weight: 700;
+                        display: inline-block;
+                        text-overflow: ellipsis;
+                        overflow: hidden;
+                        line-clamp: 2;
+                        -webkit-line-clamp: 2;
+                        word-break: keep-all;
                     }
                     &.option {
                         font-size: var(--font-small);
+                        display: inline-block;
+                        text-overflow: ellipsis;
+                        overflow: hidden;
+                        white-space: nowrap;
                     }
                 }
             }
@@ -548,6 +561,11 @@ header  {
 }
 
 .inventory_register {
+    form {
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+    }
     .component_body {
         display: flex;
         flex-direction: column;

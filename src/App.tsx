@@ -23,7 +23,7 @@ function App() {
 
     async function getInventory(){
         try {
-            const { data, error } = await supabase.from("inventory").select("*");
+            const { data, error } = await supabase.from("inventory").select("*").is('deleted_at', null);
 
             if(error){
                 console.error(error);

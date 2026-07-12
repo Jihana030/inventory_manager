@@ -6,6 +6,6 @@ export type InventoryFormType = {
     thumbnail: FileList;
     count: number;
     safe_count: number;
-    current_buy: string;
+    current_buy: Date | undefined;
     memo: string;
 };

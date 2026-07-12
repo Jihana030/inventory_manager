@@ -28,7 +28,6 @@ export default function CategorySelect({register}:Props){
 
     return (
         <select {...register("category", {required: "카테고리를 선택해주세요."})}>
-            <option value="" disabled selected>카테고리</option>
             {category.map((cate)=> (
                 <option key={cate.id} value={cate.id}>{cate.name}</option>
             ))}

@@ -5,9 +5,10 @@ import type {InventoryFormType} from "../types/InventoryFormType.ts";
 type Props = {
     register : UseFormRegister<InventoryFormType>;
     defaultImage?:string;
+    mode?:string;
 }
 
-export default function ImageUploader({register, defaultImage}:Props){
+export default function ImageUploader({register, defaultImage, mode}:Props){
     // 이미지 미리보기
     const [preview, setPreview] = useState<string>();
     const imageSrc = preview ?? defaultImage;
@@ -31,7 +32,7 @@ export default function ImageUploader({register, defaultImage}:Props){
                     const nextPreview = URL.createObjectURL(file);
                     setPreview(nextPreview);
                 }
-                , required: "이미지를 첨부해주세요."})}/>
+                , required: mode === "create" ? "이미지를 첨부해주세요." : false})}/>
             <span className="material-symbols-rounded">image_search</span>
             {imageSrc && (<img src={imageSrc} alt="미리보기"/>)}
         </label>
