@@ -9,9 +9,6 @@ export async function uploadThumbnail(file : File){
         throw error;
     }
 
-    // const {data} = supabase.storage.from('thumbnail').getPublicUrl(fileName);
-    //
-    // return data.publicUrl;
     return fileName;
 }
 

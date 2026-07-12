@@ -1,37 +1,89 @@
-// Follow this setup guide to integrate the Deno language server with your editor:
-// https://deno.land/manual/getting_started/setup_your_environment
-// This enables autocomplete, go to definition, etc.
+import { createClient } from "npm:@supabase/supabase-js@2";
 
-// Setup type definitions for built-in Supabase Runtime APIs
-import "@supabase/functions-js/edge-runtime.d.ts";
-import { withSupabase } from "@supabase/server";
+const supabase = createClient(
+    Deno.env.get("SUPABASE_URL")!,
+    Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
+);
 
-console.log("Hello from Functions!");
+Deno.serve(async () => {
+  try {
+    // 30일 전 날짜
+    const targetDate = new Date();
+    targetDate.setFullYear(targetDate.getFullYear() - 1);
 
-// This endpoint uses 'publishable' | 'secret' access, apiKey is required.
-// Use publishable for Client-facing, key-validated endpoints
-// Use secret for Server-to-server, internal calls
-export default {
-  fetch: withSupabase({ auth: ["publishable", "secret"] }, async (req, ctx) => {
-    // Called by another service with a secret key
-    // ctx.supabaseAdmin bypasses RLS — use for privileged operations
-    /*
-    if (ctx.authMode === "secret") {
-      const { user_id } = await req.json();
-      const { data } = await ctx.supabaseAdmin.auth.admin.getUserById(user_id);
+    // 삭제 대상 조회
+    const { data: items, error: selectError } = await supabase
+        .from("inventory")
+        .select("no, thumbnail")
+        .lt("deleted_at", targetDate.toISOString());
 
-      return Response.json({
-        email: data?.user?.email,
-      });
+    if (selectError) {
+      throw selectError;
     }
-    */
 
-    const { name } = await req.json();
+    if (!items || items.length === 0) {
+      return new Response(
+          JSON.stringify({
+            message: "삭제할 상품이 없습니다.",
+          }),
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+      );
+    }
 
-    return Response.json({
-      message: `Hello ${name}!`,
-    });
-  }),
-};
+    // Storage 이미지 삭제
+      const paths = items
+          .map(item => item.thumbnail)
+          .filter((path): path is string => !!path);
 
+    if (paths.length > 0) {
+      const { error } = await supabase.storage
+          .from("thumbnail")
+          .remove(paths);
 
+      if (error) throw error;
+    }
+
+    // DB 삭제
+    const ids = items.map((item) => item.no);
+
+    const { error: deleteError } = await supabase
+        .from("inventory")
+        .delete()
+        .in("no", ids);
+
+    if (deleteError) {
+      throw deleteError;
+    }
+
+    return new Response(
+        JSON.stringify({
+          success: true,
+          deletedCount: ids.length,
+        }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+    );
+  } catch (err) {
+    console.error(err);
+
+    return new Response(
+        JSON.stringify({
+          success: false,
+          error: err,
+        }),
+        {
+          status: 500,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+    );
+  }
+});
