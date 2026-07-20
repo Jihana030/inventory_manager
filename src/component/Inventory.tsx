@@ -1,5 +1,6 @@
 import type {InventoryType} from "../types/InventoryType.ts";
 import {getThumbnailUrl} from "../services/storage.ts";
+import backBg from  "../assets/back_bg.png";
 
 
 type Props = {
@@ -32,7 +33,7 @@ export default function Inventory({item, onDetail}:Props) {
                     </div>
                 ): (
                     <div className="inventory_thumbnail">
-                        <img src="http://inventorymanagement-two-psi.vercel.app/src/assets/back_bg.png" alt="thumbnail"/>
+                        <img src={backBg} alt="thumbnail"/>
                         <p className="inventory_info">
                             <span className="title">재고를 등록해보세요</span>
                         </p>

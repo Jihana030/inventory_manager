@@ -1,5 +1,6 @@
 import Inventory from "./Inventory.tsx";
 import type {InventoryType} from "../types/InventoryType.ts";
+import backBg from  "../assets/back_bg.png";
 
 type Props = {
     onAdd: ()=>void;
@@ -25,7 +26,7 @@ export default function InventoryList({onAdd, onDetail, inventoryList, isLoading
                     <div className="inventory">
                         <div className="inventory_state">0개</div>
                         <div className="inventory_thumbnail">
-                            <img src="http://inventorymanagement-two-psi.vercel.app/src/assets/back_bg.png" alt="thumbnail"/>
+                            <img src={backBg} alt="thumbnail"/>
                             <p className="inventory_info">
                                 <span className="title">재고를 등록해보세요</span>
                             </p>
