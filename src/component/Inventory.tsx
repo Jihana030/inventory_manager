@@ -1,6 +1,5 @@
 import type {InventoryType} from "../types/InventoryType.ts";
 import {getThumbnailUrl} from "../services/storage.ts";
-import backBg from  "../assets/back_bg.png";
 
 
 type Props = {
@@ -23,19 +22,12 @@ export default function Inventory({item, onDetail}:Props) {
                 )
             }
             {
-                item ? (
+                item && (
                     <div className="inventory_thumbnail">
                         <img src={imgUrl} alt="thumbnail"/>
                         <p className="inventory_info">
                             <span className="title">{item.name}</span>
                             <span className="option">{item.option_name}</span>
-                        </p>
-                    </div>
-                ): (
-                    <div className="inventory_thumbnail">
-                        <img src={backBg} alt="thumbnail"/>
-                        <p className="inventory_info">
-                            <span className="title">재고를 등록해보세요</span>
                         </p>
                     </div>
                 )
