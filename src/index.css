@@ -497,69 +497,6 @@ header  {
     }
 }
 
-.inventory_detail {
-    grid-area: detail;
-    .component_body {
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: flex-start;
-        gap: 2rem;
-    }
-    .inventory_thumbnail {
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-start;
-        align-items: flex-start;
-        gap: 1rem;
-        img {
-            width: 10rem;
-            aspect-ratio: 1/1;
-            object-fit: cover;
-            border-radius: var(--radius-big);
-        }
-        .inventory_info {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: flex-start;
-            gap: 0.5rem;
-            select {
-                min-width: 8rem;
-            }
-            div {
-                display: flex;
-                flex-direction: column;
-                justify-content: flex-start;
-                align-items: flex-start;
-                gap: 0.4rem;
-                padding-left: 1rem;
-            }
-            .title {
-                font-weight: 700;
-                font-size: var(--font-subtitle);
-                input {
-                    border: none;
-                    background: none;
-                }
-            }
-            .option input {
-                border: none;
-                background: none;
-            }
-        }
-    }
-    .inventory_state {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: 2rem;
-        justify-content: flex-start;
-        align-items: flex-start;
-    }
-}
-
 .inventory_register {
     form {
         display: flex;
@@ -578,7 +515,15 @@ header  {
         flex-direction: row;
         justify-content: flex-start;
         align-items: flex-start;
-        gap: 1rem;
+        gap: 3rem;
+        .image_box {
+            width: 10rem;
+            .descript {
+                width: 100%;
+                text-align: center;
+                color: var(--font-gray);
+            }
+        }
         input[type="file"]{
             display: none;
         }

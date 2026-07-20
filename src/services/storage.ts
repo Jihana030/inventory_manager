@@ -1,7 +1,8 @@
 import {supabase} from "../lib/supabase.ts";
 
 export async function uploadThumbnail(file : File){
-    const fileName = `${Date.now()}-${file.name}`;
+    const ext = file.name.split(".").pop();
+    const fileName = `${crypto.randomUUID()}.${ext}`;
     const {error} = await supabase.storage.from('thumbnail').upload(fileName, file);
 
     if(error) {

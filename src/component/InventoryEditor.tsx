@@ -129,7 +129,12 @@ export default function InventoryEditor({onClose, onSuccess,mode, item}:Props) {
                         <input type="text" spellCheck={false} {...register("option_name", {required: "옵션명을 입력해주세요.", validate: (value)=>value.trim() !== '' || "제품명을 입력해주세요."})}/>
                     </div>
                     <div className="inventory_state">
-                        <ImageUploader register={register} mode={mode} defaultImage={mode==="edit" && item ? getThumbnailUrl(item.thumbnail) : undefined}/>
+                        <div className="image_box">
+                            <ImageUploader register={register} mode={mode} defaultImage={mode==="edit" && item ? getThumbnailUrl(item.thumbnail) : undefined}/>
+                            <div className="descript">
+                                최대 5MB 가능
+                            </div>
+                        </div>
                         <div>
                             <CategorySelect register={register}/>
                             <div className="state_box">
