@@ -32,7 +32,7 @@ export default function Inventory({item, onDetail}:Props) {
                     </div>
                 ): (
                     <div className="inventory_thumbnail">
-                        <img src="http://localhost:5173/src/assets/back_bg.png" alt="thumbnail"/>
+                        <img src="http://inventorymanagement-two-psi.vercel.app/src/assets/back_bg.png" alt="thumbnail"/>
                         <p className="inventory_info">
                             <span className="title">재고를 등록해보세요</span>
                         </p>
