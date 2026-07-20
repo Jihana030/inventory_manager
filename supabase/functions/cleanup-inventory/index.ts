@@ -1,4 +1,5 @@
-import { createClient } from "npm:@supabase/supabase-js@2";
+import {createClient} from "@supabase/supabase-js";
+
 
 const supabase = createClient(
     Deno.env.get("SUPABASE_URL")!,
@@ -7,7 +8,7 @@ const supabase = createClient(
 
 Deno.serve(async () => {
   try {
-    // 30일 전 날짜
+    // 1년 전 날짜
     const targetDate = new Date();
     targetDate.setFullYear(targetDate.getFullYear() - 1);
 
