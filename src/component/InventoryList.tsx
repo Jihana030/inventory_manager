@@ -26,7 +26,7 @@ export default function InventoryList({onAdd, onDetail, inventoryList, isLoading
                     <div className="inventory">
                         <div className="inventory_state">0개</div>
                         <div className="inventory_thumbnail">
-                            <img src={backBg} alt="thumbnail"/>
+                            <img src="http://inventorymanagement-two-psi.vercel.app/src/assets/back_bg.png" alt="thumbnail"/>
                             <p className="inventory_info">
                                 <span className="title">재고를 등록해보세요</span>
                             </p>
