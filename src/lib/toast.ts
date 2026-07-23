@@ -4,7 +4,7 @@ import {Bounce, toast} from "react-toastify";
 export const showToast = (message: string) => {
     return toast.success(message, {
         position: 'top-center',
-        autoClose: 5000,
+        autoClose: 3000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -17,14 +17,14 @@ export const showToast = (message: string) => {
 
 export const showErrToast = (message: string) => {
     return toast.error(message, {
-        position: 'top-center',
-        autoClose: 5000,
+        position: "top-center",
+        autoClose: 3000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: 'colored',
+        theme: "colored",
         transition: Bounce,
     })
 }

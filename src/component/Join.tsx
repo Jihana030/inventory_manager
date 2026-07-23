@@ -23,8 +23,8 @@ export default function Join () {
 
             //이미 가입한 회원
             if(error){
-                setAuthError(error.message);
-                showErrToast(authError);
+                console.log(error.message)
+                showErrToast("이미 가입한 회원입니다.");
                 return;
             }
             showToast("회원가입에 성공했습니다!")
@@ -85,7 +85,7 @@ export default function Join () {
                     </div>
                 </div>
                 <div className="join_btn_box">
-                    <button onClick={handleSubmit(onSignUp)}>회원가입</button>
+                    <button onClick={handleSubmit(onSignUp)} type={"button"}>회원가입</button>
                     <button onClick={handleSubmit(onLogin)} type="submit" className="btn_p">로그인</button>
                 </div>
             </form>

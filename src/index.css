@@ -18,7 +18,7 @@
     --border-gray: 1px solid #ddd;
     --thumb-width: 15rem;
     --thumb-height: 18rem;
-    @media (max-width: 84rem) {
+    @media (max-width: 50rem) {
         --font-title: 1.8rem;
         --font-subtitle: 1.4rem;
         --font-normal: 1.2rem;
@@ -146,7 +146,7 @@ header  {
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        @media (max-width: 84rem) {
+        @media (max-width: 50rem) {
             padding: 1rem 2rem;
             height: 3.3rem;
         }
@@ -246,17 +246,19 @@ header  {
     flex-direction: row;
     justify-content: center;
     align-items: flex-start;
+    flex-wrap: wrap;
     gap: 2rem;
     position: relative;
     max-width: 144rem;
     width: 100%;
     min-width: 32rem;
     margin: 0 auto;
-    @media (max-width: 84rem) {
+    @media (max-width: 50rem) {
         flex-direction: column;
         justify-content: flex-start;
         align-items: center;
         height: 100%;
+        > div { width: 100%; }
     }
     > div {
         border-radius: var(--radius-big);
@@ -275,7 +277,7 @@ header  {
             border-bottom: var(--border-gray);
             min-height: 5.6rem;
             background: var(--white);
-            @media (max-width: 84rem) {
+            @media (max-width: 50rem) {
                 padding: 0.2rem 1rem;
                 min-height: 4rem;
             }
@@ -309,14 +311,14 @@ header  {
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                @media (max-width: 84rem) {
+                @media (max-width: 50rem) {
                     border: none;
                 }
                 span {
                     font-size: 3rem;
                     color: var(--font-gray);
                     transition: all 0.5s;
-                    @media (max-width: 84rem) {
+                    @media (max-width: 50rem) {
                         font-size: 2.2rem;
                     }
                 }
@@ -350,10 +352,19 @@ header  {
 }
 
 .inventory_list {
+    width: 100%;
     height: stretch !important;
     flex: 1;
-    @media (max-width: 84rem) {
-        height: calc(100dvh - 5.4rem) !important;
+    min-width: 20rem;
+    @media (max-width: 50rem) {
+        height: calc(100dvh - 9.4rem) !important;
+    }
+    .list_sort {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 1.2rem;
     }
     .component_body {
         display: grid;
@@ -361,8 +372,9 @@ header  {
         grid-template-rows: repeat(auto-fit, var(--thumb-height));
         grid-gap: 2rem;
         justify-items: center;
-        @media (max-width: 84rem) {
+        @media (max-width: 50rem) {
             grid-gap: 1rem;
+            max-height: calc(100dvh - 13.4rem);
         }
     }
     .inventory {
@@ -393,10 +405,11 @@ header  {
             gap: 0.4rem;
             font-weight: 600;
             &.immer {
-                justify-content: flex-start;
+                justify-content: space-between;
                 background: var(--red);
                 color: var(--white);
                 span {font-size: 1.6rem}
+                div {display: flex; flex-direction: row; justify-content: flex-start; align-items: center; gap: 4px;}
             }
         }
         .inventory_thumbnail {
@@ -438,7 +451,7 @@ header  {
                         overflow: hidden;
                         line-clamp: 2;
                         -webkit-line-clamp: 2;
-                        word-break: keep-all;
+                        width: 100%;
                     }
                     &.option {
                         font-size: var(--font-small);
@@ -498,6 +511,7 @@ header  {
 }
 
 .inventory_register {
+    min-width: 34rem;
     form {
         display: flex;
         flex-direction: column;
@@ -516,6 +530,9 @@ header  {
         justify-content: flex-start;
         align-items: flex-start;
         gap: 3rem;
+        @media (max-width: 50rem) {
+            flex-direction: column;
+        }
         .image_box {
             width: 10rem;
             .descript {

@@ -8,6 +8,7 @@ import type {Session} from "@supabase/supabase-js";
 import 'react-day-picker/dist/style.css';
 import {ToastContainer} from "react-toastify";
 import type {InventoryType} from "./types/InventoryType.ts";
+import type {SortType} from "./types/SortType.ts";
 
 function App() {
     const [session, setSession] = useState<Session | null>(null);
@@ -16,14 +17,16 @@ function App() {
     const [inventoryList, setInventoryList] = useState<InventoryType[]>([]);
     const [selectedInventory, setSelectedInventory] = useState<InventoryType | null>(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [sort, setSort] = useState<SortType>("warning");
+    const [keyword, setKeyword] = useState('');
     const refreshInventory = async ()=>{
         setIsLoading(true);
         await getInventory();
     }
 
-    async function getInventory(){
+    async function getInventory(SortType=sort, searchKeyword=keyword){
         try {
-            const { data, error } = await supabase.from("inventory").select("*").is('deleted_at', null);
+            const { data, error } = await supabase.rpc("get_inventory_sorted", {p_sort: SortType, p_keyword: searchKeyword,})
 
             if(error){
                 console.error(error);
@@ -37,6 +40,11 @@ function App() {
         } finally {
             setIsLoading(false);
         }
+    }
+
+    const handleSortChange = async (sort:SortType)=>{
+        setSort(sort);
+        await getInventory(sort, keyword);
     }
 
 
@@ -78,6 +86,8 @@ function App() {
                             setIsOpenDetail(true);
                         }}
                         inventoryList={inventoryList} isLoading={isLoading}
+                        sort={sort}
+                        onSortChange={handleSortChange}
                     />
 
                     {isOpenForm && <InventoryEditor mode={"create"} onClose={()=>setIsOpenForm(false)} onSuccess={refreshInventory}/>}

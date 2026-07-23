@@ -16,8 +16,11 @@ export default function Inventory({item, onDetail}:Props) {
                     <div className="inventory_state">{item.count}개</div>
                 ) : (
                     <div className="inventory_state immer">
-                        <span className="material-symbols-rounded">error</span>
-                        재고 주의
+                        <div>
+                            <span className="material-symbols-rounded">error</span>
+                            재고 주의
+                        </div>
+                        <div>{item.count}개</div>
                     </div>
                 )
             }
