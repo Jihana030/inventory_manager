@@ -151,12 +151,23 @@ header  {
             height: 3.3rem;
         }
     }
+    .header_left {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 2rem;
+        @media (max-width: 50rem) {
+            gap: 0.8rem;
+        }
+    }
     .user_state {
         display: flex;
         flex-direction: row;
         justify-content: flex-start;
         align-items: center;
         gap: 1rem;
+        span {white-space: nowrap;}
         .material-symbols-rounded {
             font-size: 1.8rem;
             font-weight: 600;
@@ -237,11 +248,18 @@ header  {
     }
 }
 
-.container {
+.wrap {
     background: var(--back-gray);
     padding: 3rem;
     height: calc(100dvh - 5.4rem);
     overflow: hidden;
+    max-width: 144rem;
+    min-width: 32rem;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.container {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -249,10 +267,7 @@ header  {
     flex-wrap: wrap;
     gap: 2rem;
     position: relative;
-    max-width: 144rem;
     width: 100%;
-    min-width: 32rem;
-    margin: 0 auto;
     @media (max-width: 50rem) {
         flex-direction: column;
         justify-content: flex-start;
@@ -350,6 +365,27 @@ header  {
         }
     }
 }
+.inventory_search {
+    position: relative;
+    margin-bottom: 2rem;
+    input {
+        border-radius: 2rem;
+        padding: 0.8rem 1.2rem;
+        @media (max-width: 50rem) {
+            padding: 0.4rem 1.2rem;
+        }
+    }
+    label {
+        position: absolute;
+        right: 1rem;
+        top: calc(50% - 1rem);
+        cursor: pointer;
+        span {color: var(--font-gray); font-size: 2rem}
+        @media (max-width: 50rem) {
+            right: calc(50% - 1rem);;
+        }
+    }
+}
 
 .inventory_list {
     width: 100%;
@@ -368,7 +404,7 @@ header  {
     }
     .component_body {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(var(--thumb-width), 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(var(--thumb-width), 1fr));
         grid-template-rows: repeat(auto-fit, var(--thumb-height));
         grid-gap: 2rem;
         justify-items: center;

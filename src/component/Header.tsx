@@ -13,7 +13,7 @@ export default function Header({user}: HeaderProps){
     dayjs.extend(isLeapYear); // 플러그인 등록
     dayjs.locale('ko'); // 언어 등록
 
-    const nowDate = dayjs(new Date()).format('YYYY년 MM월 DD일 (dd) HH:mm');
+    const nowDate = dayjs(new Date()).format('YYYY년 MM월 DD일 (dd)');
 
     const splitEmail = user?.email?.split("@") || "";
 
@@ -28,7 +28,9 @@ export default function Header({user}: HeaderProps){
     return (
         <header>
             <div>
-                <span>{nowDate}</span>
+                <div className="header_left">
+                    <span>{nowDate}</span>
+                </div>
                 <div className="user_state">
                     <span>{user ? `${splitEmail[0]}님의 재고 서랍` : '로그인/회원가입을 통해 재고를 관리해보세요.'}</span>
                     {user && <span className="material-symbols-rounded" onClick={signOut}>logout</span>}

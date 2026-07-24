@@ -1,11 +1,9 @@
 import {supabase} from "../lib/supabase.ts";
 import {useForm} from "react-hook-form";
-import {useState} from "react";
 import 'react-toastify/dist/ReactToastify.css';
 import {showErrToast, showToast} from "../lib/toast.ts";
 
 export default function Join () {
-    const [authError, setAuthError] = useState<string>("");
     // rhf
     type Inputs = {
         email : string;
@@ -14,7 +12,6 @@ export default function Join () {
     const {register, handleSubmit, formState: { errors }} = useForm<Inputs>();
     // 회원가입
     const onSignUp = async (data: Inputs)=>{
-        setAuthError("");
         try {
             const {error} = await supabase.auth.signUp({
                 email : data.email,
@@ -40,7 +37,6 @@ export default function Join () {
 
     // 로그인
     const onLogin = async (data: Inputs) =>{
-        setAuthError("");
         try {
             const {error} = await supabase.auth.signInWithPassword({
                 email: data.email,
@@ -48,9 +44,12 @@ export default function Join () {
             })
 
             // 없는 회원
-            if(error) {
-                setAuthError(error.message);
-                showErrToast(authError);
+            if(error){
+                if(error.message === 'Invalid login credentials') {
+                    showErrToast("이메일 또는 비밀번호를 다시 확인해주세요.");
+                } else {
+                    showErrToast("로그인에 실패했습니다.");
+                }
                 return;
             }
 
@@ -67,7 +66,7 @@ export default function Join () {
 
     return (
         <div className="user_join">
-            <form>
+            <form onSubmit={handleSubmit(onLogin)}>
                 <div className="join_input_box">
                     <div className="input_box">
                         <input type="text" id="join_id" placeholder="" defaultValue={""} {...register("email", {required: "이메일 주소를 입력해주세요.", pattern:{value:/^[a-zA-Z0-9+-|_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/, message: "올바른 이메일 형식을 작성해주세요."}})}/>
@@ -85,8 +84,8 @@ export default function Join () {
                     </div>
                 </div>
                 <div className="join_btn_box">
-                    <button onClick={handleSubmit(onSignUp)} type={"button"}>회원가입</button>
-                    <button onClick={handleSubmit(onLogin)} type="submit" className="btn_p">로그인</button>
+                    <button onClick={handleSubmit(onSignUp)} type="button">회원가입</button>
+                    <button type="submit" className="btn_p">로그인</button>
                 </div>
             </form>
         </div>

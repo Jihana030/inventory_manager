@@ -9,6 +9,7 @@ import 'react-day-picker/dist/style.css';
 import {ToastContainer} from "react-toastify";
 import type {InventoryType} from "./types/InventoryType.ts";
 import type {SortType} from "./types/SortType.ts";
+import InventorySearch from "./component/InventorySearch.tsx";
 
 function App() {
     const [session, setSession] = useState<Session | null>(null);
@@ -47,6 +48,11 @@ function App() {
         await getInventory(sort, keyword);
     }
 
+    const handleSearch = async (keyword:string)=> {
+        setKeyword(keyword);
+        await getInventory(sort, keyword);
+    }
+
 
     useEffect(()=>{
         // 세션 정보 get
@@ -76,23 +82,26 @@ function App() {
             {!session && <Join/>}
             {
                 session &&
-                <div className="container">
-                    <InventoryList
-                        onAdd={()=> {
-                            setIsOpenForm(true);
-                        }}
-                        onDetail={(item)=> {
-                            setSelectedInventory(item);
-                            setIsOpenDetail(true);
-                        }}
-                        inventoryList={inventoryList} isLoading={isLoading}
-                        sort={sort}
-                        onSortChange={handleSortChange}
-                    />
+                <div className="wrap">
+                    <InventorySearch keyword={keyword} onSearch={handleSearch}/>
+                    <div className="container">
+                        <InventoryList
+                            onAdd={()=> {
+                                setIsOpenForm(true);
+                            }}
+                            onDetail={(item)=> {
+                                setSelectedInventory(item);
+                                setIsOpenDetail(true);
+                            }}
+                            inventoryList={inventoryList} isLoading={isLoading}
+                            sort={sort}
+                            onSortChange={handleSortChange}
+                        />
 
-                    {isOpenForm && <InventoryEditor mode={"create"} onClose={()=>setIsOpenForm(false)} onSuccess={refreshInventory}/>}
+                        {isOpenForm && <InventoryEditor mode={"create"} onClose={()=>setIsOpenForm(false)} onSuccess={refreshInventory}/>}
 
-                    {(isOpenDetail && selectedInventory) && <InventoryEditor mode={"edit"} onClose={()=>setIsOpenDetail(false)} item={selectedInventory} onSuccess={refreshInventory}/>}
+                        {(isOpenDetail && selectedInventory) && <InventoryEditor mode={"edit"} onClose={()=>setIsOpenDetail(false)} item={selectedInventory} onSuccess={refreshInventory}/>}
+                    </div>
                 </div>
             }
             <ToastContainer position="top-center" theme="colored" />
