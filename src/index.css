@@ -252,11 +252,13 @@ header  {
     background: var(--back-gray);
     padding: 3rem;
     height: calc(100dvh - 5.4rem);
-    overflow: hidden;
     max-width: 144rem;
     min-width: 32rem;
     width: 100%;
     margin: 0 auto;
+    @media (max-width: 50rem) {
+        padding: 1rem;
+    }
 }
 
 .container {
@@ -272,7 +274,8 @@ header  {
         flex-direction: column;
         justify-content: flex-start;
         align-items: center;
-        height: 100%;
+        gap: 1rem;
+        height: auto;
         > div { width: 100%; }
     }
     > div {
@@ -368,12 +371,12 @@ header  {
 .inventory_search {
     position: relative;
     margin-bottom: 2rem;
+    @media (max-width: 50rem) {
+        margin-bottom: 1rem;
+    }
     input {
         border-radius: 2rem;
         padding: 0.8rem 1.2rem;
-        @media (max-width: 50rem) {
-            padding: 0.4rem 1.2rem;
-        }
     }
     label {
         position: absolute;
@@ -381,9 +384,6 @@ header  {
         top: calc(50% - 1rem);
         cursor: pointer;
         span {color: var(--font-gray); font-size: 2rem}
-        @media (max-width: 50rem) {
-            right: calc(50% - 1rem);;
-        }
     }
 }
 
