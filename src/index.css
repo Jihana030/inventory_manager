@@ -39,6 +39,22 @@
     box-sizing: border-box;
     color: inherit;
     font-weight: inherit;
+    &::-webkit-scrollbar {
+        width: 3px;
+        height: 3px;
+        border-radius: 20px;
+        overflow: hidden;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: transparent;
+        border-radius: 20px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: var(--font-gray);
+        border-radius: 20px;
+    }
 }
 
 a {
@@ -270,6 +286,7 @@ header  {
     gap: 2rem;
     position: relative;
     width: 100%;
+    height: calc(100dvh - 16.7rem);
     @media (max-width: 50rem) {
         flex-direction: column;
         justify-content: flex-start;
