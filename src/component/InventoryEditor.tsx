@@ -4,7 +4,7 @@ import {showErrToast, showToast} from "../lib/toast.ts";
 import {getThumbnailUrl, uploadThumbnail} from "../services/storage.ts";
 import ImageUploader from "./ImageUploader.tsx";
 import CategorySelect from "./CategorySelect.tsx";
-import {useEffect} from "react";
+import {useEffect, useRef} from "react";
 import {DayPicker} from "react-day-picker";
 import { ko } from 'date-fns/locale';
 import {showFirstError} from "../lib/form.ts";
@@ -113,6 +113,8 @@ export default function InventoryEditor({onClose, onSuccess,mode, item}:Props) {
         }
     }, [item, mode, reset])
 
+    const dialogRef = useRef<HTMLDialogElement>(null);
+
     return (
         <div className="inventory_register">
             <div className="component_title">
@@ -164,9 +166,22 @@ export default function InventoryEditor({onClose, onSuccess,mode, item}:Props) {
                 </div>
                 <div className="component_btn">
                     <button type={"submit"} className="btn_y">{mode === "create" ? "저장" : "수정"}</button>
-                    {mode === "edit" && (<button className="btn_r" onClick={()=>onDelete()}>삭제</button>)}
+                    {mode === "edit" && (<button className="btn_r" type={"button"} onClick={()=> dialogRef.current?.showModal()}>삭제</button>)}
                     <button type="button" onClick={onClose}>닫기</button>
                 </div>
+              <dialog ref={dialogRef} className='alert_dialog'>
+                <div className='dialog_header'>
+                  <span className='material-symbols-rounded' onClick={()=>dialogRef.current?.close()}>close</span>
+                </div>
+                <div className='dialog_body'>
+                  <p className='alert_title'>물건을 삭제할까요?</p>
+                  <p>선택한 물건이 재고목록에서 삭제됩니다.</p>
+                </div>
+                <div className='dialog_footer'>
+                  <button className='btn_r' onClick={()=>onDelete()}>삭제하기</button>
+                  <button onClick={()=>dialogRef.current?.close()}>닫기</button>
+                </div>
+              </dialog>
             </form>
         </div>
     )
