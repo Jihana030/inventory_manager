@@ -10,6 +10,7 @@ import { ko } from 'date-fns/locale';
 import {showFirstError} from "../lib/form.ts";
 import type {InventoryFormType} from "../types/InventoryFormType.ts";
 import type {InventoryType} from "../types/InventoryType.ts";
+import {toast} from "react-toastify";
 
 type Props = {
     mode:  "create" | "edit";
@@ -19,7 +20,7 @@ type Props = {
 }
 
 export default function InventoryEditor({onClose, onSuccess,mode, item}:Props) {
-    const {register, handleSubmit, reset, control, setValue} = useForm<InventoryFormType>({
+    const {register, handleSubmit, reset, control, setValue, getValues} = useForm<InventoryFormType>({
         defaultValues: {
             count : 0,
             current_buy : mode === "edit" ? new Date(item?.current_buy ?? "") : new Date(),
@@ -88,13 +89,52 @@ export default function InventoryEditor({onClose, onSuccess,mode, item}:Props) {
         }
     };
 
+    const restoreInventory = async (no: InventoryType['no'], deletedAt: string) => {
+        const {data, error} = await supabase.from('inventory')
+            .update({deleted_at: null})
+            .eq('no', no)
+            .eq('deleted_at', deletedAt)
+            .select('no')
+            .maybeSingle();
+        if (error || !data) {
+            if (error) console.error(error);
+            showErrToast('재고 복원에 실패했습니다.');
+            return false;
+        }
+        await onSuccess();
+        return true;
+    };
+
     // 삭제 (6개월 후 삭제)
     const onDelete = async () => {
-        await supabase.from('inventory')
-            .update({ deleted_at: new Date().toISOString(), })
-            .eq('no', item?.no)
-            .select()
-    }
+        if (!item) return;
+
+        const {no} = item;
+        const deletedAt = new Date().toISOString();
+        const {data, error} = await supabase.from('inventory')
+            .update({deleted_at: deletedAt})
+            .eq('no', no)
+            .is('deleted_at', null)
+            .select('no')
+            .maybeSingle();
+        if (error || !data) {
+            if (error) console.error(error);
+            showErrToast('재고 삭제에 실패했습니다.');
+            return;
+        }
+
+        dialogRef.current?.close();
+        onClose();
+        toast.success(({closeToast}) => (
+            <div className='restored_toast'>
+                재고가 삭제되었습니다.
+                <button type="button" onClick={async () => {
+                    if (await restoreInventory(no, deletedAt)) closeToast();
+                }}>복원하기</button>
+            </div>
+        ), {autoClose: 8000, closeOnClick: false});
+        await onSuccess();
+    };
 
     const onInvalid = (errors:FieldErrors<InventoryFormType>) => {
         showFirstError(errors);
@@ -138,7 +178,7 @@ export default function InventoryEditor({onClose, onSuccess,mode, item}:Props) {
                             </div>
                         </div>
                         <div>
-                            <CategorySelect register={register}/>
+                            <CategorySelect register={register} getValues={getValues} setValue={setValue}/>
                             <div className="state_box">
                                 <span>재고 현황</span>
                                 <div className="counter">
@@ -150,7 +190,7 @@ export default function InventoryEditor({onClose, onSuccess,mode, item}:Props) {
                             <div className="state_box">
                                 <span>안전재고</span>
                                 <div>
-                                    <input type="number" {...register("safe_count", {required: "안전 재고를 입력해주세요.", valueAsNumber: true, min:{value:0, message:"0 보다 큰 숫자를 입력하세요."}})}/>
+                                    <input type="number" defaultValue={0} {...register("safe_count", {required: "안전 재고를 입력해주세요.", valueAsNumber: true, min:{value:0, message:"0 보다 큰 숫자를 입력하세요."}})}/>
                                 </div>
                             </div>
                             <div className="state_box">
@@ -161,7 +201,7 @@ export default function InventoryEditor({onClose, onSuccess,mode, item}:Props) {
                     </div>
                     <div className="state_box">
                         <span>메모</span>
-                        <textarea rows={5} {...register("memo", {required: "기타 메모를 입력해주세요."})}></textarea>
+                        <textarea rows={5} {...register("memo")}></textarea>
                     </div>
                 </div>
                 <div className="component_btn">
@@ -178,8 +218,8 @@ export default function InventoryEditor({onClose, onSuccess,mode, item}:Props) {
                   <p>선택한 물건이 재고목록에서 삭제됩니다.</p>
                 </div>
                 <div className='dialog_footer'>
-                  <button className='btn_r' onClick={()=>onDelete()}>삭제하기</button>
-                  <button onClick={()=>dialogRef.current?.close()}>닫기</button>
+                  <button className='btn_r' type={"button"} onClick={()=>onDelete()}>삭제하기</button>
+                  <button type={"button"}  onClick={()=>dialogRef.current?.close()}>닫기</button>
                 </div>
               </dialog>
             </form>

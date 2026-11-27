@@ -719,3 +719,14 @@ dialog::backdrop {
     padding: 1rem 0 2rem;
   }
 }
+
+.restored_toast {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 1rem;
+  padding-right: 1.4rem;
+  padding-bottom: 0.2rem;
+}
