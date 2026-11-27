@@ -2,6 +2,8 @@ import Inventory from "./Inventory.tsx";
 import type {InventoryType} from "../types/InventoryType.ts";
 import backBg from  "../assets/back_bg.png";
 import type {SortType} from "../types/SortType.ts";
+import {useRef} from "react";
+import InventoryTrash from "./InventoryTrash.tsx";
 
 type Props = {
     onAdd: ()=>void;
@@ -13,6 +15,7 @@ type Props = {
 };
 
 export default function InventoryList({onAdd, onDetail, inventoryList, isLoading, sort, onSortChange}:Props) {
+  const trashDialog = useRef<HTMLDialogElement>(null);
 
     return (
         <div className="inventory_list">
@@ -27,9 +30,14 @@ export default function InventoryList({onAdd, onDetail, inventoryList, isLoading
                         </select>
                     </div>
                 </div>
-                <div className="side_menu" onClick={onAdd}>
-                    <span className="material-symbols-rounded" title="등록">add_circle</span>
+              <div className="side_menu_box">
+                <div className="side_menu" onClick={()=>trashDialog.current?.showModal()}>
+                  <span className="material-symbols-rounded" title="휴지통">delete</span>
                 </div>
+                <div className="side_menu" onClick={onAdd}>
+                  <span className="material-symbols-rounded" title="등록">add_circle</span>
+                </div>
+              </div>
             </div>
             <div className="component_body">
                 {isLoading ? (
@@ -49,8 +57,8 @@ export default function InventoryList({onAdd, onDetail, inventoryList, isLoading
                         <Inventory key={item.no} item={item} onDetail={onDetail}/>
                     ))
                 )}
-
             </div>
+          <InventoryTrash ref={trashDialog}/>
         </div>
     )
 }

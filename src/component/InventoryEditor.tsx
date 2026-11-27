@@ -11,6 +11,7 @@ import {showFirstError} from "../lib/form.ts";
 import type {InventoryFormType} from "../types/InventoryFormType.ts";
 import type {InventoryType} from "../types/InventoryType.ts";
 import {toast} from "react-toastify";
+import {InventoryRestored} from "../services/inventoryRestored.ts";
 
 type Props = {
     mode:  "create" | "edit";
@@ -89,22 +90,6 @@ export default function InventoryEditor({onClose, onSuccess,mode, item}:Props) {
         }
     };
 
-    const restoreInventory = async (no: InventoryType['no'], deletedAt: string) => {
-        const {data, error} = await supabase.from('inventory')
-            .update({deleted_at: null})
-            .eq('no', no)
-            .eq('deleted_at', deletedAt)
-            .select('no')
-            .maybeSingle();
-        if (error || !data) {
-            if (error) console.error(error);
-            showErrToast('재고 복원에 실패했습니다.');
-            return false;
-        }
-        await onSuccess();
-        return true;
-    };
-
     // 삭제 (6개월 후 삭제)
     const onDelete = async () => {
         if (!item) return;
@@ -129,7 +114,10 @@ export default function InventoryEditor({onClose, onSuccess,mode, item}:Props) {
             <div className='restored_toast'>
                 재고가 삭제되었습니다.
                 <button type="button" onClick={async () => {
-                    if (await restoreInventory(no, deletedAt)) closeToast();
+                  const restored = await InventoryRestored({no, deletedAt});
+                    if (!restored) return;
+                    await onSuccess();
+                    closeToast();
                 }}>복원하기</button>
             </div>
         ), {autoClose: 8000, closeOnClick: false});
@@ -215,7 +203,7 @@ export default function InventoryEditor({onClose, onSuccess,mode, item}:Props) {
                 </div>
                 <div className='dialog_body'>
                   <p className='alert_title'>물건을 삭제할까요?</p>
-                  <p>선택한 물건이 재고목록에서 삭제됩니다.</p>
+                  <p className='alert_subtitle'>선택한 물건이 재고목록에서 삭제됩니다.</p>
                 </div>
                 <div className='dialog_footer'>
                   <button className='btn_r' type={"button"} onClick={()=>onDelete()}>삭제하기</button>
